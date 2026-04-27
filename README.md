@@ -30,9 +30,11 @@ uvicorn app.main:app --reload --port 8000
 cd frontend
 npm install
 export VITE_API_BASE=http://localhost:8000/api
-export VITE_MAPBOX_TOKEN=your_mapbox_token
+export VITE_MAPBOX_TOKEN=your_mapbox_token  # required for interactive map
 npm run dev
 ```
+
+If `VITE_MAPBOX_TOKEN` is not set, the app shows a non-interactive fallback panel instead of failing.
 
 ## Tests
 
