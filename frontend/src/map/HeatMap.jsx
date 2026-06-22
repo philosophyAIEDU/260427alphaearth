@@ -3,7 +3,7 @@ import mapboxgl from 'mapbox-gl'
 import 'mapbox-gl/dist/mapbox-gl.css'
 
 const TOKEN = import.meta.env.VITE_MAPBOX_TOKEN || ''
-mapboxgl.accessToken = TOKEN
+if (TOKEN) mapboxgl.accessToken = TOKEN
 
 function toFeature(route) {
   if (!route?.points?.length) return null
