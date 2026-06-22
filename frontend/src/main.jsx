@@ -8,6 +8,8 @@ import Home from './pages/Home'
 import Tutorial from './pages/Tutorial'
 import Playground from './pages/Playground'
 import Practice from './pages/Practice'
+import AICoder from './pages/AICoder'
+import AboutAlphaEarth from './pages/AboutAlphaEarth'
 
 registerServiceWorker()
 
@@ -18,8 +20,10 @@ createRoot(document.getElementById('root')).render(
         <Navbar />
         <Routes>
           <Route path="/" element={<Home />} />
+          <Route path="/about" element={<AboutAlphaEarth />} />
           <Route path="/tutorial" element={<Tutorial />} />
           <Route path="/playground" element={<Playground />} />
+          <Route path="/ai-coder" element={<AICoder />} />
           <Route path="/practice" element={<Practice />} />
         </Routes>
       </div>
