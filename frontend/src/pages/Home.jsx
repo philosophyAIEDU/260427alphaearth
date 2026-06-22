@@ -1,44 +1,29 @@
 import { Link } from 'react-router-dom'
 
 const features = [
-  {
-    icon: '🛰️',
-    title: '위성 이미지 임베딩',
-    desc: 'Google Earth Engine의 위성 데이터를 AI 임베딩 벡터로 변환해 지구 표면의 열 특성을 정밀하게 파악합니다.',
-  },
-  {
-    icon: '🌡️',
-    title: '열 위험도 예측',
-    desc: '코사인 유사도 기반 알고리즘으로 임의 좌표의 열 위험 점수(0~100)와 위험 등급을 실시간으로 계산합니다.',
-  },
-  {
-    icon: '🗺️',
-    title: '경로 위험 분석',
-    desc: '출발지에서 목적지까지의 경로를 분석하여 구간별 열 위험도와 안전 이동 권고 여부를 제공합니다.',
-  },
-  {
-    icon: '☁️',
-    title: 'WeatherNext 통합',
-    desc: '기상 예보 데이터를 임베딩 모델과 결합해 현재 기온 기반의 보정된 위험 점수를 산출합니다.',
-  },
-  {
-    icon: '📡',
-    title: 'REST API',
-    desc: 'FastAPI 기반의 REST API로 어떤 서비스에도 쉽게 통합할 수 있습니다. /api/risk, /api/route 엔드포인트 제공.',
-  },
-  {
-    icon: '📱',
-    title: 'PWA 지원',
-    desc: '프로그레시브 웹 앱으로 오프라인에서도 작동하며, 모바일 기기에서 네이티브 앱처럼 설치할 수 있습니다.',
-  },
+  { icon: '🛰️', title: '위성 이미지 분석', desc: 'Landsat, Sentinel, MODIS 등 수십 년간의 위성 데이터를 클라우드에서 즉시 처리합니다.' },
+  { icon: '⏱️', title: '시계열 분석', desc: '특정 지역의 식생, 기온, 토지피복 변화를 수십 년 단위로 추적할 수 있습니다.' },
+  { icon: '🌱', title: 'NDVI · 식생 지수', desc: '정규화 식생 지수(NDVI)로 작물 생장, 산림 변화, 사막화를 모니터링합니다.' },
+  { icon: '🌡️', title: '지표면 온도(LST)', desc: '열 적외선 밴드로 도시 열섬, 산불 피해, 기후 변화를 분석합니다.' },
+  { icon: '🗺️', title: '지형 & 토지피복', desc: 'DEM, SRTM, NLCD 등의 데이터셋으로 지형 분석과 토지 분류를 수행합니다.' },
+  { icon: '🤖', title: '머신러닝 분류', desc: 'Random Forest, SVM 등의 내장 ML 알고리즘으로 위성 이미지를 자동 분류합니다.' },
 ]
 
 const pipeline = [
-  { icon: '📍', step: 'Step 1', title: '좌표 입력' },
-  { icon: '🛰️', step: 'Step 2', title: 'GEE 임베딩' },
-  { icon: '🧠', step: 'Step 3', title: 'AI 분석' },
-  { icon: '🌡️', step: 'Step 4', title: '위험 점수' },
-  { icon: '🗺️', step: 'Step 5', title: '지도 시각화' },
+  { icon: '🔑', step: 'Step 1', title: '계정 등록' },
+  { icon: '💻', step: 'Step 2', title: 'Code Editor' },
+  { icon: '🛰️', step: 'Step 3', title: '데이터 로드' },
+  { icon: '🔬', step: 'Step 4', title: '분석 실행' },
+  { icon: '📤', step: 'Step 5', title: '결과 내보내기' },
+]
+
+const usecases = [
+  { emoji: '🌾', title: '농업 모니터링', desc: '작물 생장 상태 파악, 수확량 예측' },
+  { emoji: '🌲', title: '산림 관리', desc: '산림 벌채, 산불 피해 면적 추적' },
+  { emoji: '🏙️', title: '도시 열섬', desc: '도시화에 따른 지표면 온도 변화 분석' },
+  { emoji: '🌊', title: '수자원 관리', desc: '홍수 범람 범위, 가뭄 지수 모니터링' },
+  { emoji: '🏔️', title: '빙하 변화', desc: '빙하 면적 축소, 해수면 상승 추적' },
+  { emoji: '🌫️', title: '대기 오염', desc: 'NO₂, PM2.5 농도 시공간 분포 파악' },
 ]
 
 export default function Home() {
@@ -46,26 +31,26 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="hero">
-        <div className="hero-badge">AI 재난 예방 플랫폼 · Korea MVP</div>
+        <div className="hero-badge">Google Earth Engine 학습 플랫폼</div>
         <h1>
-          <span className="hl">AlphaEarth</span>로<br />
-          열 재난을 예측하다
+          위성으로 지구를 읽는<br />
+          <span className="hl">Google Earth Engine</span>
         </h1>
         <p>
-          위성 이미지 임베딩과 AI 기반 기후 모델을 결합하여 대한민국 어디서나
-          실시간 열 위험도를 분석하고 안전한 이동 경로를 안내합니다.
+          수십 년치 위성 이미지를 클라우드에서 단 몇 줄의 코드로 분석하세요.
+          단계별 튜토리얼과 인터랙티브 코드 예제로 GEE를 빠르게 익힐 수 있습니다.
         </p>
         <div className="hero-cta">
           <Link to="/tutorial" className="btn btn-primary">📚 튜토리얼 시작</Link>
-          <Link to="/demo" className="btn btn-outline">🔬 데모 체험</Link>
+          <Link to="/playground" className="btn btn-outline">💻 코드 예제 보기</Link>
         </div>
       </section>
 
-      {/* How it works */}
+      {/* Pipeline */}
       <div style={{ background: 'var(--bg2)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
         <div className="section">
-          <div className="section-title">어떻게 작동하나요?</div>
-          <div className="section-sub">5단계 파이프라인으로 위성 데이터를 열 위험 점수로 변환합니다</div>
+          <div className="section-title">GEE 시작 흐름</div>
+          <div className="section-sub">5단계로 위성 데이터 분석을 시작하세요</div>
           <div className="pipeline">
             {pipeline.map((s, i) => (
               <>
@@ -74,9 +59,7 @@ export default function Home() {
                   <div className="p-label">{s.step}</div>
                   <div className="p-title">{s.title}</div>
                 </div>
-                {i < pipeline.length - 1 && (
-                  <div className="pipeline-arrow" key={`arr${i}`}>→</div>
-                )}
+                {i < pipeline.length - 1 && <div className="pipeline-arrow" key={`a${i}`}>→</div>}
               </>
             ))}
           </div>
@@ -85,8 +68,8 @@ export default function Home() {
 
       {/* Features */}
       <div className="section">
-        <div className="section-title">주요 기능</div>
-        <div className="section-sub">AlphaEarth가 제공하는 핵심 기능들</div>
+        <div className="section-title">GEE의 핵심 기능</div>
+        <div className="section-sub">클라우드 기반 지구 관측 플랫폼이 제공하는 강력한 분석 도구</div>
         <div className="cards-grid">
           {features.map(f => (
             <div className="card" key={f.title}>
@@ -98,24 +81,45 @@ export default function Home() {
         </div>
       </div>
 
-      {/* CTA */}
-      <div style={{ background: 'var(--bg2)', borderTop: '1px solid var(--border)' }}>
-        <div className="section" style={{ textAlign: 'center' }}>
-          <div className="section-title">지금 바로 시작하세요</div>
-          <p style={{ color: 'var(--muted)', maxWidth: 520, margin: '0 auto 2rem' }}>
-            단계별 튜토리얼로 AlphaEarth의 모든 기능을 배우고,
-            인터랙티브 데모와 실습 문제로 실력을 확인하세요.
-          </p>
-          <div className="hero-cta">
-            <Link to="/tutorial" className="btn btn-primary">📚 튜토리얼 시작하기</Link>
-            <Link to="/practice" className="btn btn-outline">✏️ 실습 문제 풀기</Link>
+      {/* Use cases */}
+      <div style={{ background: 'var(--bg2)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
+        <div className="section">
+          <div className="section-title">활용 분야</div>
+          <div className="section-sub">전 세계 연구자와 기관이 GEE로 해결하는 문제들</div>
+          <div className="cards-grid" style={{ gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))' }}>
+            {usecases.map(u => (
+              <div className="card" key={u.title} style={{ textAlign: 'center' }}>
+                <div style={{ fontSize: '2.5rem', marginBottom: '0.5rem' }}>{u.emoji}</div>
+                <h3 style={{ fontSize: '0.95rem' }}>{u.title}</h3>
+                <p style={{ fontSize: '0.85rem' }}>{u.desc}</p>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
+      {/* CTA */}
+      <div className="section" style={{ textAlign: 'center' }}>
+        <div className="section-title">지금 바로 시작하세요</div>
+        <p style={{ color: 'var(--muted)', maxWidth: 520, margin: '0 auto 2rem', lineHeight: 1.7 }}>
+          GEE 계정이 없어도 괜찮습니다. 튜토리얼을 먼저 읽고
+          코드 플레이그라운드에서 예제를 복사해 Code Editor에 바로 붙여넣으세요.
+        </p>
+        <div className="hero-cta">
+          <Link to="/tutorial" className="btn btn-primary">📚 튜토리얼 시작하기</Link>
+          <a href="https://code.earthengine.google.com/" target="_blank" rel="noopener" className="btn btn-outline">
+            🌍 GEE Code Editor 열기 ↗
+          </a>
+        </div>
+      </div>
+
       <footer className="footer">
-        <p>AlphaEarth · AI 기반 열 재난 예방 플랫폼 · Korea MVP</p>
-        <p style={{ marginTop: '0.25rem' }}>Built with FastAPI, React, Google Earth Engine, WeatherNext</p>
+        <p>Google Earth Engine 학습 플랫폼 · 위성 데이터로 지구를 분석하세요</p>
+        <p style={{ marginTop: '0.25rem' }}>
+          공식 사이트: <a href="https://earthengine.google.com" target="_blank" rel="noopener">earthengine.google.com</a>
+          &nbsp;·&nbsp;
+          <a href="https://developers.google.com/earth-engine" target="_blank" rel="noopener">공식 문서</a>
+        </p>
       </footer>
     </div>
   )
