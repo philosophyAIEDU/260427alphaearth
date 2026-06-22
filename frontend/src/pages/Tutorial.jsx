@@ -1,148 +1,187 @@
 import { useState } from 'react'
 
+const C = ({ children }) => <code style={{ background: '#1e293b', padding: '1px 5px', borderRadius: 4, fontSize: '0.88em', color: '#38bdf8' }}>{children}</code>
+
 const steps = [
   {
-    id: 0,
-    icon: '🌍',
-    title: 'AlphaEarth란?',
+    id: 0, icon: '🌍', title: 'Google Earth Engine이란?',
     content: () => (
       <div className="step-body">
         <p>
-          <strong>AlphaEarth</strong>는 위성 이미지 임베딩(Satellite Image Embedding)과
-          AI 기반 기후 예측 모델을 결합하여 지구 표면의 열 위험도를 실시간으로 분석하는 플랫폼입니다.
+          <strong>Google Earth Engine(GEE)</strong>은 구글이 제공하는 클라우드 기반 지구 관측 플랫폼입니다.
+          NASA, USGS, ESA 등에서 수집한 수십 년치 위성 이미지 데이터를 브라우저에서 단 몇 줄의
+          JavaScript 또는 Python 코드로 분석할 수 있습니다.
         </p>
-
-        <h3>🎯 무엇을 해결하나요?</h3>
-        <p>
-          대한민국은 매년 여름 폭염으로 인한 온열질환자가 급증합니다.
-          AlphaEarth는 임의의 GPS 좌표를 입력하면 해당 위치의 열 위험도를
-          <strong> 0~100 점수</strong>로 즉시 제공합니다.
-        </p>
-
         <div className="info-box">
-          💡 AlphaFold가 단백질 구조를 예측하듯, AlphaEarth는 지구 표면의 열 위험 패턴을 예측합니다.
+          💡 로컬 PC에 데이터를 다운받을 필요 없이, 페타바이트 규모의 위성 데이터를 구글의 클라우드에서
+          직접 처리합니다.
         </div>
-
-        <h3>🧩 핵심 구성 요소</h3>
-        <ul>
-          <li><strong>임베딩 서비스</strong> — Google Earth Engine 위성 이미지를 128차원 벡터로 변환</li>
-          <li><strong>위험도 모델</strong> — 코사인 유사도로 현재 위치와 고위험 패턴을 비교</li>
-          <li><strong>기상 통합</strong> — WeatherNext API로 현재 기온을 위험 점수에 반영</li>
-          <li><strong>경로 분석</strong> — 이동 경로를 10개 구간으로 샘플링해 평균 위험도 계산</li>
-        </ul>
-
-        <h3>🏗️ 기술 스택</h3>
-        <div className="code-block">
-          <span className="cmt"># Backend</span>{'\n'}
-          <span className="var">FastAPI</span> + <span className="var">Python 3.11</span>{'\n'}
-          <span className="var">numpy</span> · <span className="var">scikit-learn</span> · <span className="var">httpx</span>{'\n\n'}
-          <span className="cmt"># Frontend</span>{'\n'}
-          <span className="var">React 18</span> + <span className="var">Vite</span>{'\n'}
-          <span className="var">Mapbox GL JS</span> · <span className="var">PWA</span>
+        <h3>🆚 GEE vs 기존 방식</h3>
+        <div style={{ overflowX: 'auto' }}>
+          <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: '0.88rem' }}>
+            <thead>
+              <tr style={{ borderBottom: '1px solid var(--border)', color: 'var(--muted)' }}>
+                <th style={{ padding: '0.6rem 0.8rem', textAlign: 'left' }}>항목</th>
+                <th style={{ padding: '0.6rem 0.8rem', textAlign: 'left' }}>기존 방식</th>
+                <th style={{ padding: '0.6rem 0.8rem', textAlign: 'left' }}>GEE</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                ['데이터 용량', 'GB~TB 직접 다운로드', '페타바이트 클라우드'],
+                ['처리 속도', '로컬 CPU/GPU 의존', '구글 분산 컴퓨팅'],
+                ['데이터 접근', 'NASA/USGS 개별 접속', '통합 카탈로그'],
+                ['진입 장벽', '복잡한 환경 설정', '브라우저에서 즉시'],
+                ['비용', '서버 구축 비용', '비상업 이용 무료'],
+              ].map(([item, old, gee]) => (
+                <tr key={item} style={{ borderBottom: '1px solid var(--border)' }}>
+                  <td style={{ padding: '0.55rem 0.8rem', color: 'var(--text)' }}>{item}</td>
+                  <td style={{ padding: '0.55rem 0.8rem', color: 'var(--muted)' }}>{old}</td>
+                  <td style={{ padding: '0.55rem 0.8rem', color: 'var(--green)' }}>{gee}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
+        <h3>📋 GEE 계정 등록</h3>
+        <ol style={{ paddingLeft: '1.25rem' }}>
+          <li><a href="https://earthengine.google.com/signup/" target="_blank" rel="noopener">earthengine.google.com/signup</a>에서 신청</li>
+          <li>Google 계정으로 로그인 후 용도(학술/상업) 선택</li>
+          <li>승인 이메일 수신 후 <a href="https://code.earthengine.google.com/" target="_blank" rel="noopener">Code Editor</a> 접속</li>
+        </ol>
+        <div className="warn-box">⚠️ 승인에 1~3일 소요될 수 있습니다. 그 전에도 이 튜토리얼로 코드 구조를 익혀두세요.</div>
       </div>
     ),
   },
   {
-    id: 1,
-    icon: '📡',
-    title: '위성 임베딩 이해하기',
+    id: 1, icon: '💻', title: 'Code Editor 사용법',
     content: () => (
       <div className="step-body">
         <p>
-          AlphaEarth의 핵심은 <strong>위성 이미지 임베딩</strong>입니다.
-          특정 좌표의 지표면 특성을 숫자 벡터로 표현하여 AI가 처리할 수 있게 만듭니다.
+          GEE Code Editor는 <a href="https://code.earthengine.google.com/" target="_blank" rel="noopener">code.earthengine.google.com</a>에서
+          접속하는 브라우저 기반 IDE입니다.
         </p>
-
-        <h3>📊 임베딩이란?</h3>
-        <p>
-          임베딩은 복잡한 데이터(이미지, 텍스트 등)를 고정 크기의 숫자 배열로 압축하는 기법입니다.
-          AlphaEarth는 위성 이미지의 <strong>128차원 벡터</strong>를 생성합니다.
-        </p>
-
-        <div className="code-block">
-          <span className="cmt"># 임베딩 예시: 서울 광화문 좌표</span>{'\n'}
-          <span className="var">embedding</span> = [{'\n'}
-          {'  '}<span className="num">0.23</span>, <span className="num">-0.15</span>, <span className="num">0.87</span>, <span className="num">0.42</span>,{'\n'}
-          {'  '}<span className="cmt">... (총 128개 값)</span>{'\n'}
-          ]
-        </div>
-
-        <h3>🌡️ 열 특성 추출 요소</h3>
-        <ul>
-          <li><strong>지표면 온도(LST)</strong> — 실제 지표면의 열 복사 에너지</li>
-          <li><strong>불투수면 비율</strong> — 아스팔트·콘크리트 등 열 흡수 표면 비율</li>
-          <li><strong>식생 지수(NDVI)</strong> — 녹지 면적 (높을수록 쿨링 효과)</li>
-          <li><strong>건물 밀도</strong> — 도시 열섬 효과 관련 지표</li>
-        </ul>
-
-        <h3>💻 API 코드 예시</h3>
-        <div className="code-block">
-          <span className="kw">import</span> <span className="var">httpx</span>{'\n\n'}
-          <span className="cmt"># 임베딩 서비스 직접 호출</span>{'\n'}
-          <span className="var">response</span> = <span className="var">httpx</span>.<span className="fn">get</span>({'\n'}
-          {'  '}<span className="str">"http://your-backend/api/embedding"</span>,{'\n'}
-          {'  '}<span className="var">params</span>=&#123;<span className="str">"lat"</span>: <span className="num">37.5665</span>, <span className="str">"lon"</span>: <span className="num">126.978</span>&#125;{'\n'}
-          ){'\n'}
-          <span className="var">vector</span> = <span className="var">response</span>.<span className="fn">json</span>()[<span className="str">"embedding"</span>]
-        </div>
-
-        <div className="warn-box">
-          ⚠️ 현재 MVP에서는 실제 GEE 연결 대신 시뮬레이션 임베딩을 사용합니다.
-          프로덕션 배포 시 GEE 서비스 계정 키가 필요합니다.
-        </div>
-      </div>
-    ),
-  },
-  {
-    id: 2,
-    icon: '🌡️',
-    title: '열 위험도 예측 API',
-    content: () => (
-      <div className="step-body">
-        <p>
-          <strong>POST /api/risk</strong> 엔드포인트는 좌표와 선택적 기상 데이터를 받아
-          열 위험 점수를 반환합니다.
-        </p>
-
-        <h3>📤 요청 형식</h3>
-        <div className="code-block">
-          <span className="cmt"># Python 예시</span>{'\n'}
-          <span className="kw">import</span> <span className="var">requests</span>{'\n\n'}
-          <span className="var">payload</span> = &#123;{'\n'}
-          {'  '}<span className="str">"lat"</span>: <span className="num">37.5665</span>,   <span className="cmt"># 위도 (서울 시청)</span>{'\n'}
-          {'  '}<span className="str">"lon"</span>: <span className="num">126.9780</span>,  <span className="cmt"># 경도</span>{'\n'}
-          {'  '}<span className="str">"temperature"</span>: <span className="num">35.0</span>  <span className="cmt"># 현재 기온 (옵션)</span>{'\n'}
-          &#125;{'\n\n'}
-          <span className="var">res</span> = <span className="var">requests</span>.<span className="fn">post</span>({'\n'}
-          {'  '}<span className="str">"https://your-api.com/api/risk"</span>,{'\n'}
-          {'  '}<span className="var">json</span>=<span className="var">payload</span>{'\n'}
-          ){'\n'}
-          <span className="var">data</span> = <span className="var">res</span>.<span className="fn">json</span>()
-        </div>
-
-        <h3>📥 응답 형식</h3>
-        <div className="code-block">
-          &#123;{'\n'}
-          {'  '}<span className="str">"risk_score"</span>: <span className="num">72.4</span>,      <span className="cmt"># 0~100 열 위험 점수</span>{'\n'}
-          {'  '}<span className="str">"risk_level"</span>: <span className="str">"HIGH"</span>,    <span className="cmt"># LOW / MEDIUM / HIGH / CRITICAL</span>{'\n'}
-          {'  '}<span className="str">"similarity"</span>: <span className="num">0.847</span>,     <span className="cmt"># 고위험 패턴과의 코사인 유사도</span>{'\n'}
-          {'  '}<span className="str">"lat"</span>: <span className="num">37.5665</span>,{'\n'}
-          {'  '}<span className="str">"lon"</span>: <span className="num">126.978</span>{'\n'}
-          &#125;
-        </div>
-
-        <h3>🎯 위험 등급 기준</h3>
-        <div className="cards-grid" style={{ gridTemplateColumns: 'repeat(4,1fr)', gap: '0.75rem', marginTop: '0.5rem' }}>
+        <h3>🖥️ 인터페이스 구성</h3>
+        <div className="cards-grid" style={{ gridTemplateColumns: '1fr 1fr', gap: '0.75rem' }}>
           {[
-            { label: 'LOW', range: '0~24', color: 'var(--accent)' },
-            { label: 'MEDIUM', range: '25~49', color: 'var(--yellow)' },
-            { label: 'HIGH', range: '50~74', color: 'var(--orange)' },
-            { label: 'CRITICAL', range: '75~100', color: 'var(--red)' },
-          ].map(g => (
-            <div key={g.label} className="card" style={{ borderColor: g.color, padding: '0.9rem' }}>
-              <div style={{ color: g.color, fontWeight: 700 }}>{g.label}</div>
-              <div style={{ fontSize: '0.85rem', color: 'var(--muted)', marginTop: '0.2rem' }}>{g.range}점</div>
+            { area: '좌측 패널', desc: 'Scripts(내 코드), Docs(API 문서), Assets(업로드 파일)' },
+            { area: '중앙 에디터', desc: 'JavaScript 코드 작성 영역. Run 버튼으로 실행' },
+            { area: '우측 패널', desc: 'Inspector(픽셀 조회), Console(출력), Tasks(내보내기)' },
+            { area: '하단 지도', desc: '분석 결과가 레이어로 표시되는 인터랙티브 지도' },
+          ].map(p => (
+            <div className="card" key={p.area} style={{ padding: '0.9rem' }}>
+              <strong style={{ color: 'var(--accent)', fontSize: '0.88rem' }}>{p.area}</strong>
+              <p style={{ marginTop: '0.35rem', fontSize: '0.83rem' }}>{p.desc}</p>
+            </div>
+          ))}
+        </div>
+        <h3>⌨️ 자주 쓰는 단축키</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem', fontSize: '0.88rem' }}>
+          {[
+            ['Ctrl + Enter', '코드 실행'],
+            ['Ctrl + /', '주석 토글'],
+            ['Ctrl + Space', '자동 완성'],
+            ['Ctrl + Z', '실행 취소'],
+          ].map(([key, desc]) => (
+            <div key={key} style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+              <kbd style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 4, padding: '0.2rem 0.5rem', fontFamily: 'monospace', fontSize: '0.82rem', color: 'var(--accent)' }}>{key}</kbd>
+              <span style={{ color: 'var(--muted)' }}>{desc}</span>
+            </div>
+          ))}
+        </div>
+        <h3>✅ 첫 번째 코드 실행</h3>
+        <p>Code Editor에 아래 코드를 붙여넣고 <strong>Run</strong>을 누르세요:</p>
+        <div className="code-block">
+          <span className="cmt">// 콘솔에 메시지 출력</span>{'\n'}
+          <span className="fn">print</span>(<span className="str">'Hello, Earth Engine!'</span>);{'\n\n'}
+          <span className="cmt">// 서울 중심 좌표 지정</span>{'\n'}
+          <span className="kw">var</span> <span className="var">seoul</span> = <span className="var">ee</span>.<span className="fn">Geometry</span>.<span className="fn">Point</span>([<span className="num">126.978</span>, <span className="num">37.566</span>]);{'\n'}
+          <span className="var">Map</span>.<span className="fn">centerObject</span>(<span className="var">seoul</span>, <span className="num">10</span>);
+        </div>
+        <div className="info-box">💡 Console 탭에 'Hello, Earth Engine!'이 출력되고 지도가 서울로 이동하면 성공입니다.</div>
+      </div>
+    ),
+  },
+  {
+    id: 2, icon: '🛰️', title: '위성 데이터 불러오기',
+    content: () => (
+      <div className="step-body">
+        <p>GEE의 핵심 객체는 <C>ee.Image</C>와 <C>ee.ImageCollection</C>입니다.</p>
+        <h3>📦 주요 데이터셋</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.5rem', fontSize: '0.88rem' }}>
+          {[
+            { id: 'COPERNICUS/S2_SR_HARMONIZED', name: 'Sentinel-2', res: '10m', note: '광학, 2017~현재' },
+            { id: 'LANDSAT/LC09/C02/T1_L2', name: 'Landsat 9', res: '30m', note: '광학, 2021~현재' },
+            { id: 'MODIS/006/MOD11A1', name: 'MODIS LST', res: '1km', note: '지표면 온도, 2000~현재' },
+            { id: 'COPERNICUS/S5P/NRTI/L3_NO2', name: 'Sentinel-5P', res: '3.5km', note: '대기 오염(NO₂)' },
+            { id: 'NASA/NASADEM_HGT/001', name: 'NASADEM', res: '30m', note: '디지털 고도 모델' },
+          ].map(d => (
+            <div key={d.id} style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 6, padding: '0.7rem 0.9rem', display: 'flex', gap: '1rem', alignItems: 'center', flexWrap: 'wrap' }}>
+              <strong style={{ color: 'var(--text)', minWidth: 110 }}>{d.name}</strong>
+              <code style={{ color: 'var(--accent)', fontSize: '0.8rem', flex: 1 }}>{d.id}</code>
+              <span style={{ color: 'var(--muted)', fontSize: '0.82rem' }}>{d.res} · {d.note}</span>
+            </div>
+          ))}
+        </div>
+        <h3>📥 ImageCollection 불러오기 & 필터링</h3>
+        <div className="code-block">
+          <span className="cmt">// Sentinel-2 컬렉션 로드</span>{'\n'}
+          <span className="kw">var</span> <span className="var">collection</span> = <span className="var">ee</span>.<span className="fn">ImageCollection</span>(<span className="str">'COPERNICUS/S2_SR_HARMONIZED'</span>){'\n'}
+          {'  '}.<span className="fn">filterDate</span>(<span className="str">'2024-06-01'</span>, <span className="str">'2024-08-31'</span>)  <span className="cmt">// 날짜 필터</span>{'\n'}
+          {'  '}.<span className="fn">filterBounds</span>(<span className="var">seoul</span>)             <span className="cmt">// 지역 필터</span>{'\n'}
+          {'  '}.<span className="fn">filter</span>(<span className="var">ee</span>.<span className="fn">Filter</span>.<span className="fn">lt</span>(<span className="str">'CLOUDY_PIXEL_PERCENTAGE'</span>, <span className="num">10</span>));<span className="cmt"> // 구름 10% 미만</span>{'\n\n'}
+          <span className="cmt">// 중앙값 합성 (구름 제거 효과)</span>{'\n'}
+          <span className="kw">var</span> <span className="var">image</span> = <span className="var">collection</span>.<span className="fn">median</span>();{'\n\n'}
+          <span className="fn">print</span>(<span className="str">'이미지 수:'</span>, <span className="var">collection</span>.<span className="fn">size</span>());
+        </div>
+        <div className="info-box">
+          💡 <C>.median()</C>으로 여러 장의 이미지를 합성하면 구름이 자동으로 제거됩니다.
+          픽셀별로 중간값을 취하기 때문입니다.
+        </div>
+      </div>
+    ),
+  },
+  {
+    id: 3, icon: '🌱', title: 'NDVI 계산 & 시각화',
+    content: () => (
+      <div className="step-body">
+        <p>
+          <strong>NDVI(정규화 식생 지수)</strong>는 가장 많이 쓰이는 식생 지표입니다.
+          근적외선(NIR)과 적색(Red) 밴드의 반사율로 계산합니다.
+        </p>
+        <div style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 8, padding: '1rem', textAlign: 'center', margin: '1rem 0', fontFamily: 'monospace' }}>
+          <span style={{ fontSize: '1.1rem', color: 'var(--accent)' }}>NDVI = (NIR − Red) / (NIR + Red)</span>
+          <div style={{ fontSize: '0.8rem', color: 'var(--muted)', marginTop: '0.4rem' }}>범위: -1 ~ +1 · 식물이 많을수록 높은 값</div>
+        </div>
+        <h3>💻 NDVI 계산 코드 (Sentinel-2)</h3>
+        <div className="code-block">
+          <span className="kw">var</span> <span className="var">seoul</span> = <span className="var">ee</span>.<span className="fn">Geometry</span>.<span className="fn">Point</span>([<span className="num">126.978</span>, <span className="num">37.566</span>]);{'\n'}
+          <span className="var">Map</span>.<span className="fn">centerObject</span>(<span className="var">seoul</span>, <span className="num">11</span>);{'\n\n'}
+          <span className="kw">var</span> <span className="var">image</span> = <span className="var">ee</span>.<span className="fn">ImageCollection</span>(<span className="str">'COPERNICUS/S2_SR_HARMONIZED'</span>){'\n'}
+          {'  '}.<span className="fn">filterDate</span>(<span className="str">'2024-07-01'</span>, <span className="str">'2024-07-31'</span>){'\n'}
+          {'  '}.<span className="fn">filterBounds</span>(<span className="var">seoul</span>){'\n'}
+          {'  '}.<span className="fn">filter</span>(<span className="var">ee</span>.<span className="fn">Filter</span>.<span className="fn">lt</span>(<span className="str">'CLOUDY_PIXEL_PERCENTAGE'</span>, <span className="num">10</span>)){'\n'}
+          {'  '}.<span className="fn">median</span>();{'\n\n'}
+          <span className="cmt">// NDVI 계산: B8=NIR, B4=Red</span>{'\n'}
+          <span className="kw">var</span> <span className="var">ndvi</span> = <span className="var">image</span>.<span className="fn">normalizedDifference</span>([<span className="str">'B8'</span>, <span className="str">'B4'</span>]).<span className="fn">rename</span>(<span className="str">'NDVI'</span>);{'\n\n'}
+          <span className="cmt">// 색상 팔레트로 시각화</span>{'\n'}
+          <span className="kw">var</span> <span className="var">palette</span> = [<span className="str">'#d73027'</span>, <span className="str">'#fee08b'</span>, <span className="str">'#1a9850'</span>];{'\n'}
+          <span className="var">Map</span>.<span className="fn">addLayer</span>(<span className="var">ndvi</span>, &#123;<span className="var">min</span>: -<span className="num">0.2</span>, <span className="var">max</span>: <span className="num">0.8</span>, <span className="var">palette</span>: <span className="var">palette</span>&#125;, <span className="str">'NDVI'</span>);{'\n\n'}
+          <span className="cmt">// 특정 지점의 NDVI 값 출력</span>{'\n'}
+          <span className="kw">var</span> <span className="var">val</span> = <span className="var">ndvi</span>.<span className="fn">sample</span>(<span className="var">seoul</span>, <span className="num">10</span>).<span className="fn">first</span>();{'\n'}
+          <span className="fn">print</span>(<span className="str">'서울 시청 NDVI:'</span>, <span className="var">val</span>.<span className="fn">get</span>(<span className="str">'NDVI'</span>));
+        </div>
+        <h3>🎨 NDVI 값 해석</h3>
+        <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+          {[
+            { range: '< 0', label: '물/암석', color: '#60a5fa' },
+            { range: '0 ~ 0.2', label: '나지/도시', color: '#f87171' },
+            { range: '0.2 ~ 0.5', label: '초지/관목', color: '#fbbf24' },
+            { range: '> 0.5', label: '밀림/건강 식생', color: '#34d399' },
+          ].map(v => (
+            <div key={v.range} style={{ background: 'var(--bg3)', border: `1px solid ${v.color}`, borderRadius: 6, padding: '0.5rem 0.8rem', fontSize: '0.83rem' }}>
+              <div style={{ color: v.color, fontWeight: 600 }}>{v.range}</div>
+              <div style={{ color: 'var(--muted)' }}>{v.label}</div>
             </div>
           ))}
         </div>
@@ -150,99 +189,101 @@ const steps = [
     ),
   },
   {
-    id: 3,
-    icon: '🗺️',
-    title: '경로 위험 분석 API',
+    id: 4, icon: '🌡️', title: '지표면 온도(LST) 분석',
     content: () => (
       <div className="step-body">
         <p>
-          <strong>POST /api/route</strong>는 출발지에서 목적지까지의 경로를 10개 구간으로
-          나누어 각 지점의 열 위험도를 분석하고 이동 권장 여부를 반환합니다.
+          MODIS 위성의 열 적외선 센서로 측정한 <strong>지표면 온도(LST)</strong>를 활용하면
+          도시 열섬 효과와 기후 변화를 정량적으로 분석할 수 있습니다.
         </p>
-
-        <h3>📤 요청 형식</h3>
+        <h3>💻 LST 분석 코드 (MODIS)</h3>
         <div className="code-block">
-          <span className="var">payload</span> = &#123;{'\n'}
-          {'  '}<span className="str">"start_lat"</span>: <span className="num">37.5665</span>,  <span className="cmt"># 출발지 위도</span>{'\n'}
-          {'  '}<span className="str">"start_lon"</span>: <span className="num">126.9780</span>, <span className="cmt"># 출발지 경도</span>{'\n'}
-          {'  '}<span className="str">"end_lat"</span>: <span className="num">37.5700</span>,    <span className="cmt"># 목적지 위도</span>{'\n'}
-          {'  '}<span className="str">"end_lon"</span>: <span className="num">127.0200</span>    <span className="cmt"># 목적지 경도</span>{'\n'}
-          &#125;
+          <span className="kw">var</span> <span className="var">korea</span> = <span className="var">ee</span>.<span className="fn">Geometry</span>.<span className="fn">Rectangle</span>([<span className="num">124.5</span>, <span className="num">33.0</span>, <span className="num">130.0</span>, <span className="num">38.9</span>]);{'\n\n'}
+          <span className="cmt">// MODIS 일별 LST 데이터 로드</span>{'\n'}
+          <span className="kw">var</span> <span className="var">lst</span> = <span className="var">ee</span>.<span className="fn">ImageCollection</span>(<span className="str">'MODIS/061/MOD11A1'</span>){'\n'}
+          {'  '}.<span className="fn">filterDate</span>(<span className="str">'2024-07-01'</span>, <span className="str">'2024-07-31'</span>){'\n'}
+          {'  '}.<span className="fn">filterBounds</span>(<span className="var">korea</span>){'\n'}
+          {'  '}.<span className="fn">select</span>(<span className="str">'LST_Day_1km'</span>)         <span className="cmt">// 낮 시간 LST</span>{'\n'}
+          {'  '}.<span className="fn">mean</span>();{'\n\n'}
+          <span className="cmt">// 켈빈 → 섭씨 변환 (× 0.02 − 273.15)</span>{'\n'}
+          <span className="kw">var</span> <span className="var">lstCelsius</span> = <span className="var">lst</span>.<span className="fn">multiply</span>(<span className="num">0.02</span>).<span className="fn">subtract</span>(<span className="num">273.15</span>);{'\n\n'}
+          <span className="kw">var</span> <span className="var">palette</span> = [<span className="str">'#313695'</span>, <span className="str">'#74add1'</span>, <span className="str">'#fee090'</span>, <span className="str">'#f46d43'</span>, <span className="str">'#a50026'</span>];{'\n'}
+          <span className="var">Map</span>.<span className="fn">addLayer</span>(<span className="var">lstCelsius</span>, &#123;<span className="var">min</span>: <span className="num">20</span>, <span className="var">max</span>: <span className="num">45</span>, <span className="var">palette</span>&#125;, <span className="str">'LST (°C)'</span>);{'\n'}
+          <span className="var">Map</span>.<span className="fn">centerObject</span>(<span className="var">korea</span>, <span className="num">7</span>);
         </div>
-
-        <h3>📥 응답 형식</h3>
+        <div className="warn-box">
+          ⚠️ MODIS LST의 원시값은 켈빈 × 50 스케일 정수입니다.
+          섭씨로 변환하려면 반드시 <C>× 0.02 − 273.15</C>를 적용하세요.
+        </div>
+        <h3>📊 시계열 분석 추가</h3>
         <div className="code-block">
-          &#123;{'\n'}
-          {'  '}<span className="str">"waypoints"</span>: [{'\n'}
-          {'    '}&#123; <span className="str">"lat"</span>: <span className="num">37.566</span>, <span className="str">"lon"</span>: <span className="num">126.979</span>, <span className="str">"risk"</span>: <span className="num">45.2</span> &#125;,{'\n'}
-          {'    '}&#123; <span className="str">"lat"</span>: <span className="num">37.567</span>, <span className="str">"lon"</span>: <span className="num">126.984</span>, <span className="str">"risk"</span>: <span className="num">62.1</span> &#125;,{'\n'}
-          {'    '}<span className="cmt">... (총 10개 구간)</span>{'\n'}
-          {'  '}],{'\n'}
-          {'  '}<span className="str">"average_risk"</span>: <span className="num">54.7</span>,     <span className="cmt"># 경로 평균 위험도</span>{'\n'}
-          {'  '}<span className="str">"recommended"</span>: <span className="str">"CAUTION"</span>  <span className="cmt"># SAFE / CAUTION / AVOID</span>{'\n'}
-          &#125;
-        </div>
-
-        <h3>🚦 이동 권고 기준</h3>
-        <ul>
-          <li><strong style={{ color: 'var(--green)' }}>SAFE</strong> — 평균 위험도 40 미만: 이동 안전</li>
-          <li><strong style={{ color: 'var(--yellow)' }}>CAUTION</strong> — 40~69: 충분한 수분 섭취 권장</li>
-          <li><strong style={{ color: 'var(--red)' }}>AVOID</strong> — 70 이상: 이동 자제 권고</li>
-        </ul>
-
-        <div className="info-box">
-          💡 경로는 직선으로 10등분하여 각 지점을 독립적으로 분석합니다.
-          도로 네트워크 기반 경로는 향후 업데이트에서 지원 예정입니다.
+          <span className="cmt">// 서울 지점의 연간 평균 LST 시계열</span>{'\n'}
+          <span className="kw">var</span> <span className="var">chart</span> = <span className="var">ui</span>.<span className="fn">Chart</span>.<span className="fn">image</span>.<span className="fn">series</span>(&#123;{'\n'}
+          {'  '}<span className="var">imageCollection</span>: <span className="var">ee</span>.<span className="fn">ImageCollection</span>(<span className="str">'MODIS/061/MOD11A1'</span>){'\n'}
+          {'    '}.<span className="fn">filterDate</span>(<span className="str">'2020-01-01'</span>, <span className="str">'2024-12-31'</span>){'\n'}
+          {'    '}.<span className="fn">select</span>(<span className="str">'LST_Day_1km'</span>){'\n'}
+          {'    '}.<span className="fn">map</span>(<span className="kw">function</span>(<span className="var">img</span>) &#123;{'\n'}
+          {'      '}<span className="kw">return</span> <span className="var">img</span>.<span className="fn">multiply</span>(<span className="num">0.02</span>).<span className="fn">subtract</span>(<span className="num">273.15</span>);{'\n'}
+          {'    '}&#125;),{'\n'}
+          {'  '}<span className="var">region</span>: <span className="var">seoul</span>,{'\n'}
+          {'  '}<span className="var">scale</span>: <span className="num">1000</span>{'\n'}
+          &#125;).<span className="fn">setOptions</span>(&#123;<span className="var">title</span>: <span className="str">'서울 지표면 온도 (2020-2024)'</span>&#125;);{'\n'}
+          <span className="fn">print</span>(<span className="var">chart</span>);
         </div>
       </div>
     ),
   },
   {
-    id: 4,
-    icon: '🚀',
-    title: '배포 & 설정',
+    id: 5, icon: '📤', title: '결과 내보내기',
     content: () => (
       <div className="step-body">
         <p>
-          AlphaEarth는 프론트엔드(Netlify)와 백엔드(Render/Heroku)를 분리하여 배포합니다.
+          분석 결과는 Google Drive, Cloud Storage, GEE Asset으로 내보낼 수 있습니다.
+          대용량 데이터는 비동기 <strong>Tasks</strong>로 처리됩니다.
         </p>
-
-        <h3>1️⃣ 백엔드 배포 (Render)</h3>
+        <h3>☁️ Google Drive로 내보내기</h3>
         <div className="code-block">
-          <span className="cmt"># 1. 저장소 복제</span>{'\n'}
-          <span className="fn">git clone</span> <span className="str">https://github.com/your/alphaearth.git</span>{'\n\n'}
-          <span className="cmt"># 2. 백엔드 의존성 설치</span>{'\n'}
-          <span className="fn">cd</span> backend{'\n'}
-          <span className="fn">pip install</span> -r requirements.txt{'\n\n'}
-          <span className="cmt"># 3. 로컬 실행</span>{'\n'}
-          <span className="fn">uvicorn</span> app.main:app --reload --port 8000
+          <span className="cmt">// NDVI 이미지를 GeoTIFF로 Drive에 저장</span>{'\n'}
+          <span className="var">Export</span>.<span className="fn">image</span>.<span className="fn">toDrive</span>(&#123;{'\n'}
+          {'  '}<span className="var">image</span>: <span className="var">ndvi</span>,                    <span className="cmt">// 내보낼 이미지</span>{'\n'}
+          {'  '}<span className="var">description</span>: <span className="str">'Seoul_NDVI_2024'</span>, <span className="cmt">// 파일명</span>{'\n'}
+          {'  '}<span className="var">folder</span>: <span className="str">'GEE_Exports'</span>,       <span className="cmt">// Drive 폴더</span>{'\n'}
+          {'  '}<span className="var">region</span>: <span className="var">seoul</span>.<span className="fn">buffer</span>(<span className="num">10000</span>), <span className="cmt">// 10km 버퍼</span>{'\n'}
+          {'  '}<span className="var">scale</span>: <span className="num">10</span>,                   <span className="cmt">// 해상도 10m</span>{'\n'}
+          {'  '}<span className="var">crs</span>: <span className="str">'EPSG:4326'</span>           <span className="cmt">// 좌표계 WGS84</span>{'\n'}
+          &#125;);
         </div>
-
-        <h3>2️⃣ 프론트엔드 배포 (Netlify)</h3>
+        <div className="info-box">
+          💡 코드 실행 후 우측 패널 <strong>Tasks</strong> 탭에서 <strong>Run</strong>을 눌러야 실제 내보내기가 시작됩니다.
+        </div>
+        <h3>🐍 Python API (geemap)</h3>
+        <p>Python 환경(Jupyter, Colab)에서도 동일한 분석이 가능합니다:</p>
         <div className="code-block">
-          <span className="cmt"># 환경 변수 설정 (Netlify 대시보드)</span>{'\n'}
-          <span className="var">VITE_API_BASE</span>=<span className="str">https://your-backend.onrender.com/api</span>{'\n'}
-          <span className="var">VITE_MAPBOX_TOKEN</span>=<span className="str">pk.eyJ1Ijoi...</span>{'\n\n'}
-          <span className="cmt"># 빌드 설정 (netlify.toml에 이미 구성됨)</span>{'\n'}
-          <span className="var">Build command</span>: <span className="fn">npm run build</span>{'\n'}
-          <span className="var">Publish directory</span>: <span className="str">frontend/dist</span>
+          <span className="cmt"># Google Colab에서 실행</span>{'\n'}
+          <span className="kw">import</span> <span className="var">ee</span>{'\n'}
+          <span className="kw">import</span> <span className="var">geemap</span>{'\n\n'}
+          <span className="var">ee</span>.<span className="fn">Authenticate</span>()    <span className="cmt"># 최초 1회 인증</span>{'\n'}
+          <span className="var">ee</span>.<span className="fn">Initialize</span>(<span className="var">project</span>=<span className="str">'your-project-id'</span>){'\n\n'}
+          <span className="var">image</span> = (<span className="var">ee</span>.<span className="fn">ImageCollection</span>(<span className="str">'COPERNICUS/S2_SR_HARMONIZED'</span>){'\n'}
+          {'        '}.<span className="fn">filterDate</span>(<span className="str">'2024-07-01'</span>, <span className="str">'2024-07-31'</span>){'\n'}
+          {'        '}.<span className="fn">median</span>()){'\n\n'}
+          <span className="var">ndvi</span> = <span className="var">image</span>.<span className="fn">normalizedDifference</span>([<span className="str">'B8'</span>, <span className="str">'B4'</span>]){'\n\n'}
+          <span className="var">Map</span> = <span className="var">geemap</span>.<span className="fn">Map</span>(){'\n'}
+          <span className="var">Map</span>.<span className="fn">addLayer</span>(<span className="var">ndvi</span>, &#123;<span className="str">'min'</span>: -<span className="num">0.2</span>, <span className="str">'max'</span>: <span className="num">0.8</span>, <span className="str">'palette'</span>: [<span className="str">'red'</span>, <span className="str">'yellow'</span>, <span className="str">'green'</span>]&#125;, <span className="str">'NDVI'</span>){'\n'}
+          <span className="var">Map</span>
         </div>
-
-        <h3>3️⃣ 환경 변수 목록</h3>
-        <div className="cards-grid" style={{ gridTemplateColumns: '1fr', gap: '0.6rem' }}>
+        <h3>🔗 유용한 링크</h3>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
           {[
-            { key: 'VITE_API_BASE', desc: '백엔드 API 기본 URL (예: https://api.example.com/api)', req: true },
-            { key: 'VITE_MAPBOX_TOKEN', desc: 'Mapbox 지도 표시용 액세스 토큰', req: true },
-            { key: 'GEE_SERVICE_ACCOUNT', desc: 'Google Earth Engine 서비스 계정 이메일', req: false },
-            { key: 'GEE_PRIVATE_KEY', desc: 'GEE 서비스 계정 개인 키 (JSON)', req: false },
-          ].map(v => (
-            <div key={v.key} className="card" style={{ padding: '0.75rem 1rem', display: 'flex', alignItems: 'center', gap: '1rem' }}>
-              <code style={{ color: 'var(--accent)', fontSize: '0.85rem', minWidth: 200 }}>{v.key}</code>
-              <span style={{ fontSize: '0.85rem', color: 'var(--muted)' }}>{v.desc}</span>
-              <span style={{ marginLeft: 'auto', fontSize: '0.75rem', padding: '0.2rem 0.5rem', borderRadius: 4, background: v.req ? 'rgba(248,113,113,0.1)' : 'rgba(148,163,184,0.1)', color: v.req ? 'var(--red)' : 'var(--muted)' }}>
-                {v.req ? '필수' : '선택'}
-              </span>
-            </div>
+            { url: 'https://developers.google.com/earth-engine/datasets', label: '📦 GEE 데이터 카탈로그' },
+            { url: 'https://developers.google.com/earth-engine/apidocs', label: '📖 JavaScript API 문서' },
+            { url: 'https://geemap.org', label: '🐍 geemap (Python 라이브러리)' },
+            { url: 'https://developers.google.com/earth-engine/tutorials', label: '🎓 공식 튜토리얼' },
+          ].map(l => (
+            <a key={l.url} href={l.url} target="_blank" rel="noopener"
+              style={{ background: 'var(--bg3)', border: '1px solid var(--border)', borderRadius: 6, padding: '0.6rem 0.9rem', fontSize: '0.88rem', display: 'block' }}>
+              {l.label} ↗
+            </a>
           ))}
         </div>
       </div>
@@ -257,22 +298,15 @@ export default function Tutorial() {
   return (
     <div className="tut-layout">
       <aside className="tut-sidebar">
-        <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>
-          목차
-        </div>
+        <div style={{ fontSize: '0.75rem', color: 'var(--muted)', marginBottom: '0.75rem', fontWeight: 600, letterSpacing: '0.06em', textTransform: 'uppercase' }}>목차</div>
         <nav className="tut-nav">
           {steps.map(s => (
-            <button
-              key={s.id}
-              className={active === s.id ? 'active' : ''}
-              onClick={() => setActive(s.id)}
-            >
+            <button key={s.id} className={active === s.id ? 'active' : ''} onClick={() => setActive(s.id)}>
               {s.icon} {s.title}
             </button>
           ))}
         </nav>
       </aside>
-
       <main className="tut-content">
         <div className="tut-step" key={active}>
           <div className="step-header">
@@ -281,21 +315,10 @@ export default function Tutorial() {
           </div>
           <Step.content />
           <div className="step-nav">
-            <button
-              className="btn btn-outline"
-              onClick={() => setActive(a => a - 1)}
-              disabled={active === 0}
-              style={{ opacity: active === 0 ? 0.3 : 1 }}
-            >
-              ← 이전
-            </button>
-            {active < steps.length - 1 ? (
-              <button className="btn btn-primary" onClick={() => setActive(a => a + 1)}>
-                다음 →
-              </button>
-            ) : (
-              <a href="/demo" className="btn btn-primary">데모 체험하기 →</a>
-            )}
+            <button className="btn btn-outline" onClick={() => setActive(a => a - 1)} disabled={active === 0} style={{ opacity: active === 0 ? 0.3 : 1 }}>← 이전</button>
+            {active < steps.length - 1
+              ? <button className="btn btn-primary" onClick={() => setActive(a => a + 1)}>다음 →</button>
+              : <a href="/playground" className="btn btn-primary">코드 플레이그라운드 →</a>}
           </div>
         </div>
       </main>

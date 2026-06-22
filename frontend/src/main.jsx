@@ -6,9 +6,8 @@ import { registerServiceWorker } from './services/pwa'
 import Navbar from './components/Navbar'
 import Home from './pages/Home'
 import Tutorial from './pages/Tutorial'
-import Demo from './pages/Demo'
+import Playground from './pages/Playground'
 import Practice from './pages/Practice'
-import HeatApp from './pages/App'
 
 registerServiceWorker()
 
@@ -20,9 +19,8 @@ createRoot(document.getElementById('root')).render(
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/tutorial" element={<Tutorial />} />
-          <Route path="/demo" element={<Demo />} />
+          <Route path="/playground" element={<Playground />} />
           <Route path="/practice" element={<Practice />} />
-          <Route path="/app" element={<HeatApp />} />
         </Routes>
       </div>
     </BrowserRouter>
