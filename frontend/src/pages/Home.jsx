@@ -31,20 +31,52 @@ export default function Home() {
     <div>
       {/* Hero */}
       <section className="hero">
-        <div className="hero-badge">Google Earth Engine 학습 플랫폼</div>
+        <div className="hero-badge">Google Earth Engine + AlphaEarth 학습 플랫폼</div>
         <h1>
           위성으로 지구를 읽는<br />
-          <span className="hl">Google Earth Engine</span>
+          <span className="hl">Earth Engine</span> & <span className="hl">AlphaEarth</span>
         </h1>
         <p>
-          수십 년치 위성 이미지를 클라우드에서 단 몇 줄의 코드로 분석하세요.
-          단계별 튜토리얼과 인터랙티브 코드 예제로 GEE를 빠르게 익힐 수 있습니다.
+          <strong>Google Earth Engine</strong>은 위성 데이터를 분석하는 도구이고,
+          <strong>AlphaEarth</strong>는 그 위에서 쓰는 AI 데이터입니다.
+          두 가지를 함께 배워 지구를 분석해보세요.
         </p>
         <div className="hero-cta">
           <Link to="/tutorial" className="btn btn-primary">📚 튜토리얼 시작</Link>
           <Link to="/playground" className="btn btn-outline">💻 코드 예제 보기</Link>
         </div>
       </section>
+
+      {/* GEE vs AlphaEarth 구분 */}
+      <div className="section">
+        <div className="section-title">도구와 데이터, 무엇이 다른가요?</div>
+        <div className="section-sub">이 사이트는 두 가지를 함께 다룹니다. 헷갈리지 않게 정리해드릴게요.</div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1.25rem' }}>
+          <div className="card" style={{ borderColor: 'var(--accent)' }}>
+            <div className="card-icon">🌍</div>
+            <h3>Google Earth Engine <span style={{ fontSize: '0.78rem', color: 'var(--accent)', fontWeight: 600 }}>= 도구 (주방)</span></h3>
+            <p>
+              구글이 만든 위성 데이터 분석 <strong>플랫폼</strong>입니다.
+              수십 년치 위성 사진을 클라우드에서 코드 몇 줄로 분석하는 "작업 공간"이에요.
+              요리로 치면 <strong>주방</strong>에 해당합니다.
+            </p>
+          </div>
+          <div className="card" style={{ borderColor: '#818cf8' }}>
+            <div className="card-icon">🧠</div>
+            <h3>AlphaEarth <span style={{ fontSize: '0.78rem', color: '#818cf8', fontWeight: 600 }}>= AI 데이터 (특별한 재료)</span></h3>
+            <p>
+              Google DeepMind가 만든 <strong>AI 모델</strong>로, 위성 사진을 똑똑한 숫자(임베딩)로
+              압축해 둔 <strong>데이터셋</strong>이에요. GEE라는 주방 안에서 꺼내 쓰는
+              <strong> 특별한 재료</strong>라고 생각하면 됩니다.
+            </p>
+          </div>
+        </div>
+        <div className="info-box" style={{ marginTop: '1.25rem' }}>
+          💡 한 줄 요약: <strong>AlphaEarth는 Google Earth Engine 안에서 사용하는 하나의 AI 데이터셋</strong>입니다.
+          즉 GEE가 더 큰 개념이고, AlphaEarth는 그 안에서 활용하는 최신 AI 기술이에요.
+          &nbsp;<Link to="/about" style={{ color: 'var(--accent)' }}>AlphaEarth 자세히 알아보기 →</Link>
+        </div>
+      </div>
 
       {/* Pipeline */}
       <div style={{ background: 'var(--bg2)', borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)' }}>
@@ -114,11 +146,11 @@ export default function Home() {
       </div>
 
       <footer className="footer">
-        <p>Google Earth Engine 학습 플랫폼 · 위성 데이터로 지구를 분석하세요</p>
+        <p>Google Earth Engine + AlphaEarth 학습 플랫폼 · 위성 데이터로 지구를 분석하세요</p>
         <p style={{ marginTop: '0.25rem' }}>
-          공식 사이트: <a href="https://earthengine.google.com" target="_blank" rel="noopener">earthengine.google.com</a>
+          GEE: <a href="https://earthengine.google.com" target="_blank" rel="noopener">earthengine.google.com</a>
           &nbsp;·&nbsp;
-          <a href="https://developers.google.com/earth-engine" target="_blank" rel="noopener">공식 문서</a>
+          AlphaEarth: <a href="https://deepmind.google/discover/blog/alphaearth-foundations-helps-map-our-planet-in-unprecedented-detail/" target="_blank" rel="noopener">DeepMind 소개</a>
         </p>
       </footer>
     </div>

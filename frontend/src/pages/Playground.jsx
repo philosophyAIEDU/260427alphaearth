@@ -213,9 +213,9 @@ tempAt(forest,   '🌲 북한산 숲');`,
   },
   {
     id: 'similar',
-    category: '🔍 유사지역',
-    title: '한국과 비슷한 기후 지역 찾기',
-    desc: '서울의 위성 임베딩과 닮은 전 세계 지역을 코사인 유사도로 탐색',
+    category: '🧠 AlphaEarth',
+    title: '서울과 닮은 지역 찾기 (임베딩)',
+    desc: 'AlphaEarth 위성 임베딩으로 서울과 환경이 비슷한 지역을 유사도로 탐색',
     output: `Console:
   "서울 임베딩 추출 완료 (64차원)"
 Map:
@@ -250,6 +250,83 @@ Map.addLayer(similarity, {
   palette: ['#000004', '#3b0f70', '#8c2981', '#de4968', '#fe9f6d', '#fcfdbf']
 }, '서울과의 유사도');
 print('서울 임베딩 추출 완료');`,
+  },
+  {
+    id: 'embed-change',
+    category: '🧠 AlphaEarth',
+    title: '연도별 환경 변화 탐지 (임베딩)',
+    desc: 'AlphaEarth 임베딩으로 2022년 vs 2024년을 비교해 크게 바뀐 지역 찾기',
+    output: `Console:
+  "변화 분석 완료"
+Map:
+  🔴 빨강 = 환경이 크게 바뀐 곳
+     (개발·산불·홍수 등)
+  ⚫ 검정 = 거의 그대로인 곳
+  → 위성 사진 대신 64개 숫자만 비교해
+     빠르게 변화를 탐지!`,
+    code: `// AlphaEarth 임베딩: 두 해를 비교해 "변화량" 계산
+var col = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL');
+var region = ee.Geometry.Rectangle([127.2, 36.45, 127.4, 36.6]); // 세종시
+Map.centerObject(region, 11);
+
+var y2022 = col.filterDate('2022-01-01', '2023-01-01').mosaic();
+var y2024 = col.filterDate('2024-01-01', '2025-01-01').mosaic();
+
+// 두 임베딩의 차이(거리)가 클수록 환경이 많이 바뀐 것
+var diff = y2024.subtract(y2022);
+var changeMagnitude = diff.pow(2)
+  .reduce(ee.Reducer.sum())
+  .sqrt()
+  .rename('change');
+
+Map.addLayer(changeMagnitude, {
+  min: 0, max: 1.5,
+  palette: ['#000004', '#51127c', '#b73779', '#fc8961', '#fcfdbf']
+}, '환경 변화량 (2022→2024)');
+print('💡 위성 이미지 대신 64개 숫자만 비교해 변화를 찾았어요');`,
+  },
+  {
+    id: 'embed-classify',
+    category: '🧠 AlphaEarth',
+    title: '적은 예시로 토지 분류 (임베딩)',
+    desc: 'AlphaEarth 임베딩을 입력으로 머신러닝 분류 — 숲·물·도시 자동 구분',
+    output: `Console:
+  "분류 완료: 숲 / 물 / 도시"
+Map:
+  🟩 초록 = 숲·식생
+  🟦 파랑 = 물
+  ⬜ 회색 = 도시·건물
+  → 임베딩은 정보가 압축돼 있어
+     적은 예시로도 분류가 잘 돼요`,
+    code: `// 임베딩을 입력 특성으로 쓰면 분류가 쉬워져요
+var embeddings = ee.ImageCollection('GOOGLE/SATELLITE_EMBEDDING/V1/ANNUAL')
+  .filterDate('2023-01-01', '2024-01-01')
+  .mosaic();
+Map.centerObject(ee.Geometry.Point([126.95, 37.55]), 11);
+
+// 학습용 예시 점 (숲=0, 물=1, 도시=2)
+var training = ee.FeatureCollection([
+  ee.Feature(ee.Geometry.Point([126.981, 37.659]), {landcover: 0}), // 북한산 숲
+  ee.Feature(ee.Geometry.Point([126.960, 37.530]), {landcover: 1}), // 한강 물
+  ee.Feature(ee.Geometry.Point([126.978, 37.566]), {landcover: 2})  // 시청 도시
+]);
+
+// 각 점에서 임베딩 값 샘플링
+var samples = embeddings.sampleRegions({
+  collection: training, properties: ['landcover'], scale: 10
+});
+
+// Random Forest 분류기 학습
+var classifier = ee.Classifier.smileRandomForest(10)
+  .train({features: samples, classProperty: 'landcover',
+          inputProperties: embeddings.bandNames()});
+
+// 전체 지역 분류
+var classified = embeddings.classify(classifier);
+Map.addLayer(classified, {
+  min: 0, max: 2, palette: ['#1a9850', '#2c7fb8', '#999999']
+}, '토지 분류 (숲/물/도시)');
+print('분류 완료! 임베딩 덕분에 예시 3개로도 분류돼요');`,
   },
   {
     id: 'cropland',
@@ -422,7 +499,7 @@ print('우측 Tasks 탭에서 Run을 눌러 내보내기를 시작하세요');`,
   },
 ]
 
-const CATEGORIES = ['전체', '기초', '🔥 산불', '🌵 가뭄', '🌊 홍수', '🌡️ 폭염', '🔍 유사지역', '🌾 농업', '🏗️ 변화탐지', '🌫️ 대기질', '❄️ 적설', '📤 내보내기']
+const CATEGORIES = ['전체', '기초', '🧠 AlphaEarth', '🔥 산불', '🌵 가뭄', '🌊 홍수', '🌡️ 폭염', '🌾 농업', '🏗️ 변화탐지', '🌫️ 대기질', '❄️ 적설', '📤 내보내기']
 
 function CodeBlock({ code, onCopy, copied }) {
   const lines = code.split('\n')
@@ -479,7 +556,7 @@ export default function Playground() {
     <div style={{ maxWidth: 1200, margin: '0 auto', padding: '2rem 1.5rem' }}>
       <div className="section-title">💻 코드 플레이그라운드</div>
       <p style={{ color: 'var(--muted)', marginBottom: '1.5rem' }}>
-        한국의 산불·가뭄·홍수·폭염 등 실제 사례 코드를 복사해 <a href="https://code.earthengine.google.com/" target="_blank" rel="noopener">GEE Code Editor</a>에 바로 붙여넣으세요.
+        🧠 <strong>AlphaEarth 임베딩</strong> 예제부터 한국의 산불·가뭄·홍수·폭염 사례까지, 코드를 복사해 <a href="https://code.earthengine.google.com/" target="_blank" rel="noopener">GEE Code Editor</a>에 바로 붙여넣으세요.
       </p>
 
       <div style={{ display: 'flex', gap: '0.4rem', flexWrap: 'wrap', marginBottom: '1.5rem' }}>
