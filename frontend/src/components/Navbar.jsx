@@ -13,7 +13,6 @@ export default function Navbar() {
         <NavLink to="/tutorial" className={({ isActive }) => isActive ? 'active' : ''}>튜토리얼</NavLink>
         <NavLink to="/playground" className={({ isActive }) => isActive ? 'active' : ''}>코드 예제</NavLink>
         <NavLink to="/ai-coder" className={({ isActive }) => isActive ? 'active' : ''}>🤖 AI 코드 생성</NavLink>
-        <NavLink to="/practice" className={({ isActive }) => isActive ? 'active' : ''}>실습</NavLink>
         <a
           href="https://code.earthengine.google.com/"
           target="_blank"
